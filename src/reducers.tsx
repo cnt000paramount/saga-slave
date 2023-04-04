@@ -12,6 +12,10 @@ export default function reducer(
       return { ...state, message: action.message };
     case "USER_NOT_EXISTS":
       return { ...state, message: action.payload.message };
+    case "GET_TOKEN_SUCCEEDED":
+      return { ...state, token: action.token };
+    case "GET_TOKEN_FAILED":
+      return { ...state, message: action.message };
 
     default:
       return state;

@@ -5,12 +5,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 
-import reducer from './reducers'
-import mySaga from './sagas'
+import reducer from "./reducers";
+import mySaga from "./sagas";
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
