@@ -5,6 +5,8 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => (state.user ? state.user : {}));
   const message = useSelector((state: any) => state.message);
+  const token = useSelector((state: any) => state.token);
+  const results = useSelector((state: any) => state.results);
 
   useEffect(() => {
     dispatch({ type: "GET_TOKEN_REQUEST" });
@@ -20,6 +22,13 @@ export default function Dashboard() {
         payload: { message: "We have ony 10 user!" },
       });
     }
+  };
+
+  const searchSpotify = (e, searchTerm) => {
+    dispatch({
+      type: "SPOTIFY_SEARCH_FETCH_REQUESTED",
+      payload: { searchTerm, token },
+    });
   };
 
   return (
@@ -43,6 +52,28 @@ export default function Dashboard() {
       ) : (
         <p>{message}</p>
       )}
+
+      <form action="" onSubmit={(e) => e.preventDefault()}>
+        <input
+          name="search-spotify"
+          onChange={(e) => searchSpotify(e, e.currentTarget.value)}
+        />
+      </form>
+      <h2>Spotify Results</h2>
+      <ul>
+        {results?.tracks?.items.map((item) => (
+          <li>
+            <img
+              width="100"
+              src={item.album.images?.[0].url}
+              alt={item.album.name}
+            />
+            <br />
+            {item.name} - {item.artists.map((artist) => artist.name).join(", ")}{" "}
+            - {item.album.name}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
