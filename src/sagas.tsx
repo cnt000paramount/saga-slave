@@ -6,19 +6,35 @@ export const fetchUserCall = (id) =>
     res.json()
   );
 
-export const fetchAccessToken = () => {
-  console.log("🚀 ~ file: sagas.tsx:15 ~ fetchAccessToken ~ env:", env);
+export const fetchSearchCall = ({ searchLabel, token }) =>
+  fetch(
+    `https://api.spotify.com/v1/search?q=${searchLabel}&type=artist`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  ).then((res) => res.json());
 
-  return fetch(
-    `${env.tokenEndpoint}?grant_type=client_credentials
-&client_id=${env.clientId}
-&client_secret=${env.clientSecret}`,
+export const fetchAccessToken = () =>
+  fetch(
+    `${env.tokenEndpoint}?grant_type=client_credentials&client_id=${env.clientId}&client_secret=${env.clientSecret}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     }
   ).then((res) => res.json());
-};
+
+function* fetchSearch(action: any) {
+  try {
+    const searchResult = yield call(fetchSearchCall, {
+      searchLabel: action.payload.searchLabel,
+      token: action.payload.token,
+    });
+    yield put({ type: "SPOTY_SEARCH_SUCCEEDED", searchResult: searchResult });
+  } catch (e) {
+    yield put({ type: "SPOTY_SEARCH_FAILED", message: e.message });
+  }
+}
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchUser(action: any) {
@@ -33,7 +49,7 @@ function* fetchUser(action: any) {
 function* fetchToken(action: any) {
   try {
     const token = yield call(fetchAccessToken);
-    yield put({ type: "GET_TOKEN_SUCCEEDED", token: token });
+    yield put({ type: "GET_TOKEN_SUCCEEDED", token: token.access_token });
   } catch (e) {
     yield put({ type: "GET_TOKEN_FAILED", message: e.message });
   }
@@ -46,6 +62,7 @@ function* fetchToken(action: any) {
 function* mySaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest("GET_TOKEN_REQUEST", fetchToken);
+  yield takeLatest("SPOTY_SEARCH_REQUEST", fetchSearch);
 }
 
 export default mySaga;

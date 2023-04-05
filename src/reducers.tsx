@@ -16,7 +16,10 @@ export default function reducer(
       return { ...state, token: action.token };
     case "GET_TOKEN_FAILED":
       return { ...state, message: action.message };
-
+    case "SPOTY_SEARCH_SUCCEEDED":
+      return {...state, searchResult: action.searchResult};
+    case "SPOTY_SEARCH_FAILED":
+      return {...state, message: action.message};
     default:
       return state;
   }
