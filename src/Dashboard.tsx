@@ -1,17 +1,13 @@
 import { ChangeEvent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { SearchContent } from "spotify-types";
+import { useAppSelector, useAppDispatch } from "./hooks/hooks";
 
 export default function Dashboard() {
-  const dispatch = useDispatch();
-  const user = useSelector(
-    (state: { user: Record<string, string> }) => state.user
-  );
-  const message = useSelector((state: { message: string }) => state.message);
-  const searchResult = useSelector(
-    (state: { searchResult: SearchContent }) => state.searchResult
-  );
-  const token = useSelector((state: { token: string }) => state.token);
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector(({ old }) => old.user);
+  const message = useAppSelector(({ old }) => old.message);
+  const searchResult = useAppSelector(({ old }) => old.searchResult);
+  const token = useAppSelector(({ old }) => old.token);
 
   useEffect(() => {
     dispatch({ type: "GET_TOKEN_REQUEST" });

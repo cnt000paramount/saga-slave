@@ -1,32 +1,16 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
+import { store } from "./store";
 // import reportWebVitals from "./reportWebVitals";
 
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import createSagaMiddleware from "redux-saga";
 
-import reducer from "./reducers";
-import mySaga from "./sagas";
+const container = document.getElementById("root")!;
+const root = createRoot(container);
 
-// create the saga middleware
-const sagaMiddleware = createSagaMiddleware();
-// mount it on the Store
-const store = configureStore({
-  reducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware),
-});
-
-// then run the saga
-sagaMiddleware.run(mySaga);
-
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
 root.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
+import { setUser } from "./features/user/userSlice";
 import env from "./env";
 
 export interface ResponseGenerator {
@@ -86,6 +87,7 @@ function* fetchUser(action: any) {
       action.payload.id
     );
     yield put({ type: "USER_FETCH_SUCCEEDED", user: user });
+    yield put(setUser(user));
   } catch (e) {
     yield put({
       type: "FETCH_FAILED",
