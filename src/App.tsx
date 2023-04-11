@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
+import SocialStacks from "./SocialStacks";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="social-stacks" element={<SocialStacks />} />
 
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
@@ -41,7 +43,7 @@ function Layout() {
             <Link to="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <Link to="/nothing-here">Nothing Here</Link>
+            <Link to="/social-stacks">Playlists</Link>
           </li>
         </ul>
       </nav>

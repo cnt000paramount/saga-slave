@@ -17,8 +17,9 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "redux-saga": "^1.2.3",
-    "typescript": "^4.4.2",
-    "web-vitals": "^2.1.0"
+    "typed-redux-saga": "^1.5.0",
+    "typescript": "^5.0.4",
+    "web-vitals": "^3.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,5 +48,8 @@
   "volta": {
     "node": "19.8.1",
     "yarn": "1.22.19"
+  },
+  "devDependencies": {
+    "spotify-types": "^1.0.7"
   }
 }
