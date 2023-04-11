@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import Spotify from "./views/Spotify";
 import Counter from "./views/Counter";
 import User from "./views/User";
 
@@ -11,9 +11,9 @@ function App() {
             parent route elements. See the note about <Outlet> below. */}
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Counter />} />
           <Route path="user" element={<User />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="spotify" element={<Spotify />} />
           <Route path="counter" element={<Counter />} />
 
           {/* Using path="*"" means "match anything", so this route
@@ -34,16 +34,13 @@ function Layout() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">Counter</Link>
           </li>
           <li>
             <Link to="/user">User</Link>
           </li>
           <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/counter">Counter</Link>
+            <Link to="/spotify">Spotify</Link>
           </li>
         </ul>
       </nav>
@@ -54,14 +51,6 @@ function Layout() {
           so you can think about this <Outlet> as a placeholder for
           the child routes we defined above. */}
       <Outlet />
-    </div>
-  );
-}
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
     </div>
   );
 }

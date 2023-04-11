@@ -1,5 +1,5 @@
 import { getUserAsync, selectUser } from "./userSlice";
-import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../../util/hooks";
 
 export function User() {
   const { user } = useAppSelector(selectUser);
