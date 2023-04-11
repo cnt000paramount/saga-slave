@@ -58,7 +58,7 @@ function* fetchSearch(action: any) {
   } catch (e) {
     yield put({
       type: "FETCH_FAILED",
-      message: (e as { message: string }).message,
+      message: e instanceof Error ? e.message : "Generic Error",
     });
   }
 }
@@ -89,7 +89,7 @@ function* fetchUser(action: any) {
   } catch (e) {
     yield put({
       type: "FETCH_FAILED",
-      message: (e as { message: string }).message,
+      message: e instanceof Error ? e.message : "Generic Error",
     });
   }
 }
@@ -104,7 +104,7 @@ function* fetchToken() {
   } catch (e) {
     yield put({
       type: "FETCH_FAILED",
-      message: (e as { message: string }).message,
+      message: e instanceof Error ? e.message : "Generic Error",
     });
   }
 }
