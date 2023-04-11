@@ -27,6 +27,18 @@ export const fetchSearchCall = ({
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
+export const fetchSongSearchCall = ({
+  searchLabel,
+  token,
+}: {
+  searchLabel: string;
+  token: string;
+}) =>
+  fetch(`https://api.spotify.com/v1/search?q=${searchLabel}&type=track`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+
 export const fetchAccessToken = () =>
   fetch(
     `${env.tokenEndpoint}?grant_type=client_credentials&client_id=${env.clientId}&client_secret=${env.clientSecret}`,
@@ -39,6 +51,21 @@ export const fetchAccessToken = () =>
 function* fetchSearch(action: any) {
   try {
     const searchResult: ResponseGenerator = yield call(fetchSearchCall, {
+      searchLabel: action.payload.searchLabel,
+      token: action.payload.token,
+    });
+    yield put({ type: "SEARCH_FETCH_SUCCEEDED", searchResult: searchResult });
+  } catch (e) {
+    yield put({
+      type: "FETCH_FAILED",
+      message: (e as { message: string }).message,
+    });
+  }
+}
+
+function* fetchSongSearch(action: any) {
+  try {
+    const searchResult: ResponseGenerator = yield call(fetchSongSearchCall, {
       searchLabel: action.payload.searchLabel,
       token: action.payload.token,
     });
@@ -67,7 +94,7 @@ function* fetchUser(action: any) {
   }
 }
 
-function* fetchToken(action: any) {
+function* fetchToken() {
   try {
     const token: ResponseGenerator = yield call(fetchAccessToken);
     yield put({
@@ -90,6 +117,7 @@ function* mySaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest("GET_TOKEN_REQUEST", fetchToken);
   yield takeLatest("SPOTY_SEARCH_REQUEST", fetchSearch);
+  yield takeLatest("SPOTY_SEARCH_SONG_REQUEST", fetchSongSearch);
 }
 
 export default mySaga;

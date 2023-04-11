@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import SocialStacks from "./SocialStacks";
