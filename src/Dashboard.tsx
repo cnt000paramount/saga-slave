@@ -29,15 +29,7 @@ export default function Dashboard() {
   }, [dispatch]);
 
   const getUser = (_: React.SyntheticEvent, id: number) => {
-    if (id <= 10) {
-      dispatch({ type: "USER_FETCH_REQUESTED", payload: { id } });
-    } else {
-      dispatch({ type: "USER_FETCH_REQUESTED", payload: { id: null } });
-      dispatch({
-        type: "USER_NOT_EXISTS",
-        payload: { message: "We have ony 10 user!" },
-      });
-    }
+    dispatch({ type: "USER_FETCH_REQUESTED", payload: { id } });
   };
 
   return (

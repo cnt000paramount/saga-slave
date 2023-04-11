@@ -42,7 +42,7 @@ function* fetchSearch(action: any) {
       searchLabel: action.payload.searchLabel,
       token: action.payload.token,
     });
-    yield put({ type: "SPOTY_SEARCH_SUCCEEDED", searchResult: searchResult });
+    yield put({ type: "SEARCH_FETCH_SUCCEEDED", searchResult: searchResult });
   } catch (e) {
     yield put({
       type: "FETCH_FAILED",
@@ -71,7 +71,7 @@ function* fetchToken(action: any) {
   try {
     const token: ResponseGenerator = yield call(fetchAccessToken);
     yield put({
-      type: "GET_TOKEN_SUCCEEDED",
+      type: "TOKEN_FETCH_SUCCEEDED",
       token: (token as { access_token: string }).access_token,
     });
   } catch (e) {
