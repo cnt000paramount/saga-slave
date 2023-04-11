@@ -1,13 +1,9 @@
-import { getUserAsync, selectUser } from "./userSlice";
+import { getUser, selectUser } from "./userSlice";
 import { useAppSelector, useAppDispatch } from "../../util/hooks";
 
 export function User() {
   const { user } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-
-  const getUser = (id: number) => {
-    dispatch({ type: "USER_FETCH_REQUESTED", payload: { id } });
-  };
 
   return (
     <>
@@ -15,10 +11,14 @@ export function User() {
         <input
           name="search"
           onChange={(e) => {
-            dispatch(getUserAsync(Number(e.currentTarget.value)));
+            dispatch(getUser({ id: Number(e.currentTarget.value) }));
           }}
         />
-        <button onClick={() => getUser(Math.ceil(Math.random() * 10))}>
+        <button
+          onClick={() => {
+            dispatch(getUser({ id: Math.ceil(Math.random() * 10) }));
+          }}
+        >
           Random
         </button>
       </form>

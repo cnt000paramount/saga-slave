@@ -1,4 +1,4 @@
-import { selectSpotify } from "./spotifySlice";
+import { getResult, getToken, selectSpotify } from "./spotifySlice";
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../util/hooks";
 
@@ -7,7 +7,7 @@ export function Spotify() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch({ type: "GET_TOKEN_REQUEST" });
+    dispatch(getToken());
   }, [dispatch]);
 
   return (
@@ -17,32 +17,30 @@ export function Spotify() {
           <h2>Search artist</h2>
           <input
             name="searchArtist"
-            onChange={(e) =>
-              dispatch({
-                type: "SPOTY_SEARCH_REQUEST",
-                payload: {
+            onChange={(e) => {
+              dispatch(
+                getResult({
                   searchLabel: e.currentTarget.value,
-                  token: token,
+                  token: token ?? "",
                   type: "artist",
-                },
-              })
-            }
+                })
+              );
+            }}
           />
         </form>
         <form action="" onSubmit={(e) => e.preventDefault()}>
           <h2>Search song</h2>
           <input
             name="searchSong"
-            onChange={(e) =>
-              dispatch({
-                type: "SPOTY_SEARCH_REQUEST",
-                payload: {
+            onChange={(e) => {
+              dispatch(
+                getResult({
                   searchLabel: e.currentTarget.value,
-                  token: token,
+                  token: token ?? "",
                   type: "track",
-                },
-              })
-            }
+                })
+              );
+            }}
           />
         </form>
         <h3>Results</h3>

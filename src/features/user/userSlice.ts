@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchUser } from "./userAPI";
 import { JSONPlaceholderUser } from "../../types/JSONPlaceholderUser";
@@ -27,10 +27,12 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    // @ts-ignore
+    getUser(state, action: PayloadAction<{id: number}>) {},
+    setUser(state, action) {
       state.user = action.payload;
     },
-    setError: (state, action) => {
+    setError(state, action) {
       state.error = action.payload.error;
     },
   },
@@ -49,7 +51,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setError} = userSlice.actions;
+export const { setUser, setError, getUser} = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 

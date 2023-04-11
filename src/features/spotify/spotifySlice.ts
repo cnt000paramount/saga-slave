@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { SearchContent } from "spotify-types";
 
@@ -7,7 +7,7 @@ export interface SpotifyState {
   error: string | null;
   spotify: SearchContent | null;
   status: "idle" | "loading" | "failed";
-  type: 'track' | 'artist';
+  type: "track" | "artist";
 }
 
 const initialState: SpotifyState = {
@@ -15,7 +15,7 @@ const initialState: SpotifyState = {
   spotify: null,
   error: null,
   status: "idle",
-  type: 'artist'
+  type: "artist",
 };
 
 export const userSlice = createSlice({
@@ -31,10 +31,19 @@ export const userSlice = createSlice({
     setResult: (state, action) => {
       state.spotify = action.payload;
     },
-  }
+    getToken() {},
+    // @ts-ignore
+    getResult(state, action: PayloadAction<{
+        searchLabel: string;
+        token: string;
+        type: string;
+      }>
+    ) {},
+  },
 });
 
-export const { setToken, setResult, setError } = userSlice.actions;
+export const { setToken, setResult, setError, getToken, getResult } =
+  userSlice.actions;
 
 export const selectSpotify = (state: RootState) => state.spotify;
 

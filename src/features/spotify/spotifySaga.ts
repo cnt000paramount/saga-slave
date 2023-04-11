@@ -1,5 +1,11 @@
-import { call, put } from "redux-saga/effects";
-import { setToken, setResult, setError } from "./spotifySlice";
+import { call, put, takeLatest } from "redux-saga/effects";
+import {
+  setToken,
+  setResult,
+  setError,
+  getToken,
+  getResult,
+} from "./spotifySlice";
 import { ResponseGenerator } from "../../types/ResponseGenerator";
 import { fetchAccessToken, fetchSearchCall } from "../../Api";
 
@@ -23,4 +29,9 @@ export function* fetchToken() {
   } catch (e) {
     yield put(setError(e instanceof Error ? e.message : "Generic Error"));
   }
+}
+
+export function* spotifySaga() {
+  yield takeLatest(getToken.type, fetchToken);
+  yield takeLatest(getResult.type, fetchSearch);
 }
