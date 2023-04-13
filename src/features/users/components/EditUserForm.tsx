@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { HackNorrisUser } from "../../../types/HackNorrisUser";
 import styles from "../Users.module.css";
+import { UiState } from "../../../types/UiState";
 
 type UserFormProps = {
   user: HackNorrisUser | null;
@@ -8,9 +9,14 @@ type UserFormProps = {
 
 type EditUserFormProps = {
   saveModifiedUser: (user: HackNorrisUser) => void;
+  setUiState: (state: UiState) => void;
 } & UserFormProps;
 
-export const EditUserForm = ({ user, saveModifiedUser }: EditUserFormProps) => {
+export const EditUserForm = ({
+  user,
+  saveModifiedUser,
+  setUiState,
+}: EditUserFormProps) => {
   const [profileId, setProfileId] = useState<number>(Number(user?.profile_id));
   const [email, setEmail] = useState<string>(user?.email ?? "");
   const [name, setName] = useState<string>(user?.name ?? "");
@@ -65,6 +71,7 @@ export const EditUserForm = ({ user, saveModifiedUser }: EditUserFormProps) => {
                   email,
                   name,
                 });
+                setUiState("empty");
               }
             }}
           />

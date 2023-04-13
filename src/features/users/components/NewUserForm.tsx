@@ -1,10 +1,13 @@
 import { useState } from "react";
 import styles from "../Users.module.css";
+import { UiState } from "../../../types/UiState";
 
 export const NewUserForm = ({
   saveUser,
+  setUiState,
 }: {
   saveUser: (user: { profile_id: number; email: string; name: string }) => void;
+  setUiState: (state: UiState) => void;
 }) => {
   const [profileId, setProfileId] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -60,6 +63,7 @@ export const NewUserForm = ({
                   email,
                   name,
                 });
+                setUiState("empty");
               }
             }}
           />

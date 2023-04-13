@@ -6,22 +6,18 @@ import {
   useEditUserMutation,
   useRemoveUserMutation,
 } from "../api/apiSlice";
-import styles from "./Users.module.css";
 import { NewUserForm } from "./components/NewUserForm";
 import { UserForm } from "./components/UserForm";
 import { EditUserForm } from "./components/EditUserForm";
+import { AddNewUserForm } from "./components/AddNewUserForm";
+import { UserList } from "./components/UserList";
+import { UiState } from "../../types/UiState";
+import styles from "./Users.module.css";
 
 export function Users() {
+  const [uiState, setUiState] = useState<UiState>("empty");
   const [currentUser, setCurrentUser] = useState<HackNorrisUser | null>(null);
-  const [newUserFlag, setNewUserFlag] = useState<boolean>(false);
-  const [editUserFlag, setEditUserFlag] = useState<boolean>(false);
-  const {
-    data: users,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetUsersQuery();
+  const { data: users } = useGetUsersQuery();
 
   const [addNewUsers] = useAddNewUserMutation();
   const [editUser] = useEditUserMutation();
@@ -52,68 +48,25 @@ export function Users() {
   };
 
   return (
-    <>
-      <form
-        action=""
-        onSubmit={(e) => e.preventDefault()}
-        className={styles.form}
-      >
-        <input
-          value="Add New"
-          type="submit"
-          onClick={() => {
-            setNewUserFlag(true);
-            setCurrentUser(null);
-          }}
-        />
-      </form>
-      <ul className={styles.list}>
-        {isLoading && "Loading ..."}
-        {isSuccess &&
-          users?.map((user: HackNorrisUser, i: number) => (
-            <li key={i}>
-              <span>
-                {user.name} - {user.email}
-              </span>
-              <div className={styles.buttons}>
-                <button
-                  onClick={() => {
-                    setCurrentUser(user);
-                    setEditUserFlag(false);
-                    setNewUserFlag(false);
-                  }}
-                >
-                  View
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentUser(user);
-                    setEditUserFlag(true);
-                    setNewUserFlag(false);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    removeUserCb(user);
-                    setCurrentUser(null);
-                    setEditUserFlag(false);
-                    setNewUserFlag(false);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-      </ul>
-      {isError && error}
-      {newUserFlag && <NewUserForm saveUser={saveUser} />}
-      {!editUserFlag && currentUser && <UserForm user={currentUser} />}
-      {editUserFlag && currentUser && (
-        <EditUserForm user={currentUser} saveModifiedUser={saveModifiedUser} />
+    <div className={styles.container}>
+      <AddNewUserForm setCurrentUser={setCurrentUser} setUiState={setUiState} />
+      <UserList
+        users={users ?? []}
+        setCurrentUser={setCurrentUser}
+        removeUserCb={removeUserCb}
+        setUiState={setUiState}
+      />
+      {uiState === "new" && (
+        <NewUserForm saveUser={saveUser} setUiState={setUiState} />
       )}
-    </>
+      {uiState === "view" && currentUser && <UserForm user={currentUser} />}
+      {uiState === "edit" && (
+        <EditUserForm
+          user={currentUser}
+          saveModifiedUser={saveModifiedUser}
+          setUiState={setUiState}
+        />
+      )}
+    </div>
   );
 }
