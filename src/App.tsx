@@ -2,6 +2,9 @@ import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Spotify from "./views/Spotify";
 import Counter from "./views/Counter";
 import User from "./views/User";
+import styles from "./App.module.css";
+import HackNorrisUsers from "./views/HackNorrisUsers";
+import HackNorrisPlaylists from "./views/HackNorrisPlaylists";
 
 function App() {
   return (
@@ -15,6 +18,8 @@ function App() {
           <Route path="user" element={<User />} />
           <Route path="spotify" element={<Spotify />} />
           <Route path="counter" element={<Counter />} />
+          <Route path="users" element={<HackNorrisUsers />} />
+          <Route path="playlists" element={<HackNorrisPlaylists />} />
 
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
@@ -31,7 +36,7 @@ function Layout() {
     <div>
       {/* A "layout route" is a good place to put markup you want to
           share across all the pages on your site, like navigation. */}
-      <nav>
+      <nav className={styles.menu}>
         <ul>
           <li>
             <Link to="/">Counter</Link>
@@ -41,6 +46,12 @@ function Layout() {
           </li>
           <li>
             <Link to="/spotify">Spotify</Link>
+          </li>
+          <li>
+            <Link to="/users">Hack Norris Users</Link>
+          </li>
+          <li>
+            <Link to="/playlists">Hack Norris Playlists</Link>
           </li>
         </ul>
       </nav>

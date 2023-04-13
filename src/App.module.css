@@ -1,0 +1,24 @@
+.menu ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  width: 300px;
+  background-color: darkorchid;
+  margin: 0.2em;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 2em;
+  display: block;
+}
+
+.menu li:hover {
+  box-shadow: 0px 2px 30px 10px rgb(232, 184, 232);
+}

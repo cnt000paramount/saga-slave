@@ -5,7 +5,7 @@ import { JSONPlaceholderUser } from "../../types/JSONPlaceholderUser";
 
 export interface UserState {
   user: JSONPlaceholderUser | null;
-  error: string | null
+  error: string | null;
   status: "idle" | "loading" | "failed";
 }
 
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     // @ts-ignore
-    getUser(state, action: PayloadAction<{id: number}>) {},
+    getUser(state, action: PayloadAction<{ id: number }>) {},
     setUser(state, action) {
       state.user = action.payload;
     },
@@ -51,7 +51,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setError, getUser} = userSlice.actions;
+export const { setUser, setError, getUser } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 

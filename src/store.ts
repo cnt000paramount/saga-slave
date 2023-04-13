@@ -4,6 +4,7 @@ import userReducer from "./features/user/userSlice";
 import spotifyReducer from "./features/spotify/spotifySlice";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./rootSaga";
+import { apiSlice } from "./features/api/apiSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -12,9 +13,10 @@ export const store = configureStore({
     counter: counterReducer,
     user: userReducer,
     spotify: spotifyReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware),
+    getDefaultMiddleware().concat(sagaMiddleware).concat(apiSlice.middleware),
 });
 
 sagaMiddleware.run(rootSaga);
