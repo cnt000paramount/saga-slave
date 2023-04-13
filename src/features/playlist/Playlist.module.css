@@ -1,8 +1,12 @@
+.container {
+  max-width: 600px;
+  width: 100%;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   margin: 0.5em 0;
-  width: 400px;
 }
 
 .form input {
@@ -21,11 +25,25 @@ ul {
 .list li {
   margin: 1em 0;
   padding: 1em;
-  width: 500px;
   background-color: #1ed760;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .list span {
   flex-grow: 1;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.buttons button {
+  margin-bottom: 0.5em;
+  height: 28px;
+  width: 100px;
 }
