@@ -32,8 +32,9 @@ export const userSlice = createSlice({
       state.spotify = action.payload;
     },
     getToken() {},
-    // @ts-ignore
-    getResult(state, action: PayloadAction<{
+    getResult(
+      state,
+      action: PayloadAction<{
         searchLabel: string;
         token: string;
         type: string;

@@ -8,7 +8,7 @@ import {
 } from "../api/apiSlice";
 import { HackNorrisPlaylist } from "../../types/HackNorrisPlaylist";
 import { HackNorrisUser } from "../../types/HackNorrisUser";
-// import styles from "./Users.module.css";
+import styles from "./Playlist.module.css";
 
 type UiState = "empty" | "new" | "view" | "edit";
 
@@ -18,21 +18,10 @@ export function Playlists() {
   const [currentPlaylist, setCurrentPlaylist] =
     useState<null | HackNorrisPlaylist>(null);
 
-  const {
-    data: users,
-    // isLoading,
-    // isSuccess,
-    // isError,
-    // error,
-  } = useGetUsersQuery();
+  const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
 
-  const {
-    data: playlists,
-    // isLoading,
-    // isSuccess,
-    // isError,
-    // error,
-  } = useGetPlaylistsQuery({ id: currentUserId });
+  const { data: playlists, isLoading: isLoadingPlaylists } =
+    useGetPlaylistsQuery({ id: currentUserId });
 
   const [addNewPlaylist] = useAddNewPlaylistMutation();
   const [removePlaylist] = useRemovePlaylistMutation();
@@ -60,7 +49,11 @@ export function Playlists() {
 
   return (
     <>
-      <form action="" onSubmit={(e) => e.preventDefault()}>
+      <form
+        className={styles.form}
+        action=""
+        onSubmit={(e) => e.preventDefault()}
+      >
         <input
           value="Add New"
           type="submit"
@@ -69,60 +62,69 @@ export function Playlists() {
           }}
         />
       </form>
-      <form action="" onSubmit={(e) => e.preventDefault()}>
+      <form
+        className={styles.form}
+        action=""
+        onSubmit={(e) => e.preventDefault()}
+      >
         <select
           onChange={(e) => {
             if (e?.currentTarget?.value) {
               setCurrentUserId(e.currentTarget.value);
             }
+            setUiState("empty");
           }}
         >
           <option value="">Select a user</option>
-          {users &&
-            users.map((user) => (
-              <option value={user.id}>
-                {user.name} - {user.email}
-              </option>
-            ))}
+          {isLoadingUsers
+            ? "Loading ..."
+            : users?.map((user, i) => (
+                <option value={user.id} key={i}>
+                  {user.name} - {user.email}
+                </option>
+              ))}
         </select>
       </form>
-      {playlists?.length > 0 && currentUserId && (
-        <ul>
-          {playlists?.map((playlist: any, i: number) => (
-            <li key={i}>
-              <span>
-                {playlist.id} - {playlist.owner_id}
-              </span>
-              <div>
-                <button
-                  onClick={() => {
-                    setCurrentPlaylist(playlist);
-                    setUiState("view");
-                  }}
-                >
-                  View
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentPlaylist(playlist);
-                    setUiState("edit");
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    removePlaylistCb(playlist.id);
-                    setUiState("empty");
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      {isLoadingPlaylists
+        ? "Loading..."
+        : playlists?.length > 0 &&
+          currentUserId && (
+            <ul className={styles.list}>
+              {playlists?.map((playlist: any, i: number) => (
+                <li key={i}>
+                  <span>
+                    {playlist.id} - {playlist.owner_id}
+                  </span>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setCurrentPlaylist(playlist);
+                        setUiState("view");
+                      }}
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={() => {
+                        setCurrentPlaylist(playlist);
+                        setUiState("edit");
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        removePlaylistCb(playlist.id);
+                        setUiState("empty");
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
       {uiState === "new" && (
         <NewPlaylistForm
           users={users ?? []}
@@ -133,7 +135,11 @@ export function Playlists() {
       {uiState === "view" && currentPlaylist && (
         <>
           <h2>Playlist</h2>
-          <form action="" onSubmit={(e) => e.preventDefault()}>
+          <form
+            className={styles.form}
+            action=""
+            onSubmit={(e) => e.preventDefault()}
+          >
             <label htmlFor="owner_id">Owner Id</label>
             <input
               id="owner_id"
@@ -154,7 +160,6 @@ export function Playlists() {
       )}
       {uiState === "edit" && (
         <EditPlaylistForm
-          // @ts-ignore
           playlist={currentPlaylist}
           editPlaylist={saveModifiedPlaylist}
           setUiState={setUiState}
@@ -221,8 +226,7 @@ export const NewPlaylistForm = ({
             onClick={() => {
               savePlaylist({
                 owner_id: currentOwnerId,
-                // @ts-ignore
-                payload: JSON.parse(payload),
+                payload: JSON.parse(typeof payload === "string" ? payload : ""),
               });
               setUiState("empty");
             }}
@@ -238,7 +242,7 @@ export const EditPlaylistForm = ({
   editPlaylist,
   setUiState,
 }: {
-  playlist: HackNorrisPlaylist;
+  playlist: HackNorrisPlaylist | null;
   editPlaylist: (playlist: HackNorrisPlaylist) => void;
   setUiState: (state: UiState) => void;
 }) => {
@@ -246,33 +250,36 @@ export const EditPlaylistForm = ({
   return (
     <>
       <h2>Edit Playlist</h2>
-      <form action="" onSubmit={(e) => e.preventDefault()}>
+      <form
+        className={styles.form}
+        action=""
+        onSubmit={(e) => e.preventDefault()}
+      >
         <label htmlFor="owner_id">Owner Id</label>
-        User: {playlist.owner_id}
+        User: {playlist?.owner_id}
         <label htmlFor="payload">Payload</label>
         <textarea
           name="payload"
           id="payload"
           cols={60}
           rows={20}
-          // @ts-ignore
-          value={payload}
+          value={typeof payload === "string" ? payload : ""}
           onChange={(e) => {
             if (e?.currentTarget?.value) {
               setPayload(e.currentTarget.value);
             }
           }}
         ></textarea>
+        <pre></pre>
         {
           <input
-            value="Add"
+            value="Save"
             type="submit"
             onClick={() => {
               editPlaylist({
-                id: playlist.id,
-                owner_id: playlist.owner_id,
-                // @ts-ignore
-                payload: JSON.parse(payload),
+                id: playlist?.id ?? "",
+                owner_id: playlist?.owner_id ?? "",
+                payload: JSON.parse(typeof payload === "string" ? payload : ""),
               });
               setUiState("empty");
             }}

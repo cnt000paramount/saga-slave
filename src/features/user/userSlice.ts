@@ -27,7 +27,6 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // @ts-ignore
     getUser(state, action: PayloadAction<{ id: number }>) {},
     setUser(state, action) {
       state.user = action.payload;
