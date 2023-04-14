@@ -1,13 +1,18 @@
 import { getUser, selectUser } from "./userSlice";
 import { useAppSelector, useAppDispatch } from "../../util/hooks";
+import styles from "./Users.module.css";
 
 export function User() {
   const { user } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   return (
-    <>
-      <form action="" onSubmit={(e) => e.preventDefault()}>
+    <div className={styles.container}>
+      <form
+        action=""
+        onSubmit={(e) => e.preventDefault()}
+        className={styles.form}
+      >
         <input
           name="search"
           onChange={(e) => {
@@ -32,6 +37,6 @@ export function User() {
         <p>{"No Results"}</p>
       )}
       <pre>{JSON.stringify(user, null, 2)}</pre>
-    </>
+    </div>
   );
 }

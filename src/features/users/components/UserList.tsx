@@ -57,3 +57,5 @@ export function UserList({
     </ul>
   );
 }
+
+export default UserList;

@@ -1,10 +1,15 @@
+import React, { Suspense } from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import Spotify from "./views/Spotify";
-import Counter from "./views/Counter";
-import User from "./views/User";
 import styles from "./App.module.css";
-import HackNorrisUsers from "./views/HackNorrisUsers";
-import HackNorrisPlaylists from "./views/HackNorrisPlaylists";
+import { Loading } from "./Loading";
+
+const Counter = React.lazy(() => import("./views/Counter"));
+const User = React.lazy(() => import("./views/User"));
+const Spotify = React.lazy(() => import("./views/Spotify"));
+const HackNorrisUsers = React.lazy(() => import("./views/HackNorrisUsers"));
+const HackNorrisPlaylists = React.lazy(
+  () => import("./views/HackNorrisPlaylists")
+);
 
 function App() {
   return (
@@ -12,21 +17,23 @@ function App() {
       {/* Routes nest inside one another. Nested route paths build upon
             parent route paths, and nested route elements render inside
             parent route elements. See the note about <Outlet> below. */}
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Counter />} />
-          <Route path="user" element={<User />} />
-          <Route path="spotify" element={<Spotify />} />
-          <Route path="counter" element={<Counter />} />
-          <Route path="users" element={<HackNorrisUsers />} />
-          <Route path="playlists" element={<HackNorrisPlaylists />} />
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Counter />} />
+            <Route path="user" element={<User />} />
+            <Route path="spotify" element={<Spotify />} />
+            <Route path="counter" element={<Counter />} />
+            <Route path="users" element={<HackNorrisUsers />} />
+            <Route path="playlists" element={<HackNorrisPlaylists />} />
 
-          {/* Using path="*"" means "match anything", so this route
+            {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-      </Routes>
+            <Route path="*" element={<NoMatch />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { HackNorrisUser } from "../../types/HackNorrisUser";
 import {
   useGetUsersQuery,
@@ -10,9 +10,12 @@ import { NewUserForm } from "./components/NewUserForm";
 import { UserForm } from "./components/UserForm";
 import { EditUserForm } from "./components/EditUserForm";
 import { AddNewUserForm } from "./components/AddNewUserForm";
-import { UserList } from "./components/UserList";
 import { UiState } from "../../types/UiState";
 import styles from "./Users.module.css";
+import React from "react";
+import { Loading } from "../../Loading";
+
+const UserList = React.lazy(() => import("./components/UserList"));
 
 export function Users() {
   const [uiState, setUiState] = useState<UiState>("empty");
@@ -50,12 +53,14 @@ export function Users() {
   return (
     <div className={styles.container}>
       <AddNewUserForm setCurrentUser={setCurrentUser} setUiState={setUiState} />
-      <UserList
-        users={users ?? []}
-        setCurrentUser={setCurrentUser}
-        removeUserCb={removeUserCb}
-        setUiState={setUiState}
-      />
+      <Suspense fallback={<Loading />}>
+        <UserList
+          users={users ?? []}
+          setCurrentUser={setCurrentUser}
+          removeUserCb={removeUserCb}
+          setUiState={setUiState}
+        />
+      </Suspense>
       {uiState === "new" && (
         <NewUserForm saveUser={saveUser} setUiState={setUiState} />
       )}

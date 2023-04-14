@@ -36,3 +36,5 @@ export function SelectUserForm({
     </form>
   );
 }
+
+export default SelectUserForm;

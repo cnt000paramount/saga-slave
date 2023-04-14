@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import {
   useGetPlaylistsQuery,
   useGetUsersQuery,
@@ -15,6 +15,8 @@ import { PlaylistList } from "./components/PlaylistList";
 import { PlaylistForm } from "./components/PlaylistForm";
 import { AddNewPlaylistForm } from "./components/AddNewPlaylistForm";
 import styles from "./Playlist.module.css";
+import React from "react";
+import { Loading } from "../../Loading";
 
 export function Playlists() {
   const [uiState, setUiState] = useState<UiState>("empty");
@@ -44,14 +46,20 @@ export function Playlists() {
     await editPlaylist(playlist).unwrap();
   };
 
+  const SelectUserForm = React.lazy(
+    () => import("./components/SelectUserForm")
+  );
+
   return (
     <div className={styles.container}>
       <AddNewPlaylistForm setUiState={setUiState} />
-      <SelectUserForm
-        users={users ?? []}
-        setCurrentUserId={setCurrentUserId}
-        setUiState={setUiState}
-      />
+      <Suspense fallback={<Loading />}>
+        <SelectUserForm
+          users={users ?? []}
+          setCurrentUserId={setCurrentUserId}
+          setUiState={setUiState}
+        />
+      </Suspense>
       {playlists?.length > 0 && currentUserId && (
         <PlaylistList
           playlists={playlists}
