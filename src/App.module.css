@@ -1,12 +1,14 @@
 .menu ul {
   display: flex;
+  justify-content: center;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .menu li {
-  width: 300px;
+  max-width: 200px;
+  width: 100%;
   background-color: darkorchid;
   margin: 0.2em;
 }

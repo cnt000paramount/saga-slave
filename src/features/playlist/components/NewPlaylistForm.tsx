@@ -38,8 +38,8 @@ export const NewPlaylistForm = ({
         >
           <option value="">Select a user</option>
           {users &&
-            users.map((user) => (
-              <option value={user.id}>
+            users.map((user, i) => (
+              <option value={user.id} key={i}>
                 {user.name} - {user.email}
               </option>
             ))}
