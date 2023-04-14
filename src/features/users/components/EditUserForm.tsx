@@ -24,7 +24,9 @@ export const EditUserForm = ({
   const canSave = name && email && profileId && user?.id;
   return (
     <>
-      <h2>Edit User</h2>
+      <h2>
+        Edit User {user?.name} {name}
+      </h2>
       <form
         action=""
         onSubmit={(e) => e.preventDefault()}

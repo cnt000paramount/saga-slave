@@ -15,14 +15,13 @@ export const EditPlaylistForm = ({
   const [payload, setPayload] = useState(playlist?.payload);
   return (
     <>
-      <h2>Edit Playlist</h2>
+      <h2>Edit Playlist {playlist?.id}</h2>
       <form
         className={styles.form}
         action=""
         onSubmit={(e) => e.preventDefault()}
       >
-        <label htmlFor="owner_id">Owner Id</label>
-        User: {playlist?.owner_id}
+        Owner Id: {playlist?.owner_id}
         <label htmlFor="payload">Payload</label>
         <textarea
           name="payload"

@@ -8,7 +8,7 @@ export function PlaylistForm({
 }) {
   return (
     <>
-      <h2>Playlist</h2>
+      <h2>Playlist {currentPlaylist?.id}</h2>
       <form
         className={styles.form}
         action=""
@@ -18,7 +18,8 @@ export function PlaylistForm({
         <input
           id="owner_id"
           type="text"
-          defaultValue={currentPlaylist.owner_id}
+          disabled
+          value={currentPlaylist.owner_id}
         />
 
         <label htmlFor="payload">Payload</label>
@@ -27,7 +28,8 @@ export function PlaylistForm({
           id="payload"
           cols={60}
           rows={20}
-          defaultValue={JSON.stringify(currentPlaylist.payload, null, 2)}
+          disabled
+          value={JSON.stringify(currentPlaylist.payload, null, 2)}
         ></textarea>
       </form>
     </>
