@@ -1,19 +1,30 @@
+import { Loading } from "../../../Loading";
 import { HackNorrisPlaylist } from "../../../types/HackNorrisPlaylist";
 import { UiState } from "../../../types/UiState";
+import { useGetPlaylistsQuery } from "../../api/apiSlice";
 import styles from "../Playlist.module.css";
 
 export function PlaylistList({
-  playlists,
+  currentUserId,
   setCurrentPlaylist,
   setUiState,
   removePlaylistCb,
 }: {
-  playlists: HackNorrisPlaylist[];
+  currentUserId: string;
   setCurrentPlaylist: (playlist: HackNorrisPlaylist) => void;
   setUiState: (state: UiState) => void;
   removePlaylistCb: (id: string) => void;
 }) {
-  return (
+  const { data: playlists, isLoading } = useGetPlaylistsQuery(
+    {
+      id: currentUserId,
+    },
+    { skip: !currentUserId }
+  );
+
+  return isLoading ? (
+    <Loading />
+  ) : (
     <ul className={styles.list}>
       {playlists?.map((playlist: any, i: number) => (
         <li key={i}>

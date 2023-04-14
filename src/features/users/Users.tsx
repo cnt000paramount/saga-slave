@@ -52,7 +52,6 @@ export function Users() {
 
   return (
     <div className={styles.container}>
-      <div>{currentUser?.email}</div>
       <AddNewUserForm setCurrentUser={setCurrentUser} setUiState={setUiState} />
       <Suspense fallback={<Loading />}>
         <UserList

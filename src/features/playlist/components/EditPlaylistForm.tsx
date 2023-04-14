@@ -2,17 +2,26 @@ import { useState } from "react";
 import { HackNorrisPlaylist } from "../../../types/HackNorrisPlaylist";
 import { UiState } from "../../../types/UiState";
 import styles from "../Playlist.module.css";
+import { useEditPlaylistMutation } from "../../api/apiSlice";
 
 export const EditPlaylistForm = ({
   playlist,
-  editPlaylist,
   setUiState,
 }: {
   playlist: HackNorrisPlaylist | null;
-  editPlaylist: (playlist: HackNorrisPlaylist) => void;
   setUiState: (state: UiState) => void;
 }) => {
   const [payload, setPayload] = useState(playlist?.payload);
+  const [editPlaylist] = useEditPlaylistMutation();
+  const saveModifiedPlaylist = async (playlist: HackNorrisPlaylist) => {
+    await editPlaylist(playlist).unwrap();
+  };
+
+  const payloadValue =
+    typeof playlist?.payload === "string"
+      ? playlist?.payload
+      : JSON.stringify(playlist?.payload, null, 2);
+
   return (
     <>
       <h2>Edit Playlist {playlist?.id}</h2>
@@ -21,14 +30,18 @@ export const EditPlaylistForm = ({
         action=""
         onSubmit={(e) => e.preventDefault()}
       >
-        Owner Id: {playlist?.owner_id}
+        <div>Id: {playlist?.id}</div>
+        <div>Owner Id: {playlist?.owner_id}</div>
+        <div>
+          Payload: <pre>{payloadValue}</pre>
+        </div>
         <label htmlFor="payload">Payload</label>
         <textarea
           name="payload"
           id="payload"
           cols={60}
           rows={20}
-          value={typeof payload === "string" ? payload : ""}
+          value={JSON.stringify(payload)}
           onChange={(e) => {
             if (e?.currentTarget?.value) {
               setPayload(e.currentTarget.value);
@@ -41,10 +54,12 @@ export const EditPlaylistForm = ({
             value="Save"
             type="submit"
             onClick={() => {
-              editPlaylist({
+              saveModifiedPlaylist({
                 id: playlist?.id ?? "",
                 owner_id: playlist?.owner_id ?? "",
-                payload: JSON.parse(typeof payload === "string" ? payload : ""),
+                payload: JSON.parse(
+                  typeof playlist?.payload === "string" ? playlist?.payload : ""
+                ),
               });
               setUiState("empty");
             }}
