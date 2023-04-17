@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HackNorrisUser } from "../../../types/HackNorrisUser";
 import styles from "../Users.module.css";
 import { UiState } from "../../../types/UiState";
@@ -20,6 +20,12 @@ export const EditUserForm = ({
   const [profileId, setProfileId] = useState<number>(Number(user?.profile_id));
   const [email, setEmail] = useState<string>(user?.email ?? "");
   const [name, setName] = useState<string>(user?.name ?? "");
+
+  useEffect(() => {
+    setProfileId(Number(user?.profile_id));
+    setEmail(user?.email ?? "");
+    setName(user?.name ?? "");
+  }, [user]);
 
   const canSave = name && email && profileId && user?.id;
   return (

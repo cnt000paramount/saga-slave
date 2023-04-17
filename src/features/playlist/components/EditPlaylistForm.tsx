@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HackNorrisPlaylist } from "../../../types/HackNorrisPlaylist";
 import { UiState } from "../../../types/UiState";
 import styles from "../Playlist.module.css";
@@ -16,6 +16,10 @@ export const EditPlaylistForm = ({
   const saveModifiedPlaylist = async (playlist: HackNorrisPlaylist) => {
     await editPlaylist(playlist).unwrap();
   };
+
+  useEffect(() => {
+    setPayload(playlist?.payload);
+  }, [playlist]);
 
   const payloadValue =
     typeof playlist?.payload === "string"
