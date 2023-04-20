@@ -1,46 +1,103 @@
-# Getting Started with Create React App
+# Saga Slave - A journey with React, Redux, Saga with TypeScript (RTK and RTK query)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+This project is a Create React App built with TypeScript, aimed at exploring the use of React, Redux, and Saga.
+The project was developed by Edoardo Gargano and Andrea Reverberi.
 
-In the project directory, you can run:
 
-### `yarn start`
+## Routes and technologies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+We created a bunch of routes to implement different technologies and use cases.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Home (/)
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Render the `Counter` component, the one created by the create react app default.
+It uses the Redux Toolkit `createSlice` function and it simulates an async call with Thunk in `incrementAsync`
+No data from APIs.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### User (/user)
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Render the `User` component.
+Data is provided by `https://jsonplaceholder.typicode.com/users` API.
+It uses Redux Toolkit for the Redux part and the async actions:
+- Thunk in `getUserAsync` (not used in the UI but important to see the difference with saga)
+- Saga in `getUser`
+`userSaga.ts` listen to the `getUser` action and fetch the user
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Spotify (/Spotify)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+Render `Spotify` component.
+Data is provided by Spotify API.
+It introduces just a complexity about the token needed to call the APIs, `getToken` and `getResult`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+.env file is needed to make it works, see the section below.
+
+
+### Users (/users)
+
+
+Render `Users` component.
+Data is provided by Hack Norris API (https://github.com/viacomcbs/hack-norris). This API is created By Igor Nikolenko for the Paramount Hackathon on 30/31 March 2023
+It uses React Redux Toolkit Query located in `src/features/api/apiSlice.ts` to make the CRUD operations.
+No Redux Saga is used here.
+
+
+### Playlists (/playlists)
+
+
+Render `Playlists` component.
+Data is provided by Hack Norris API (https://github.com/viacomcbs/hack-norris). This API is created By Igor Nikolenko for the Paramount Hackathon on 30/31 March 2023
+It uses React Redux Toolkit Query located in `src/features/api/apiSlice.ts` to make the CRUD operations.
+No Redux Saga is used here.
+It is a little bit more complex than `Users` because it uses the user to call the correct playlist and a free Payload to save the content of the playlist.
+
+
+WARNING: the edit functionality is not working because the API has a known issue.
+
+
+## Getting Started
+To get started with this project, you can follow these steps:
+
+
+1. Clone this repository to your local machine.
+2. Install dependencies by running `yarn`.
+3. Start the development server by running `yarn start`.
+4. Open the app in your browser at [http://localhost:3000](http://localhost:3000).
+
+
+## Technologies Used
+- React
+- Redux
+- Redux Saga
+- TypeScript
+- Redux Toolkit
+- React Redux Toolkit Query
+
+
+## .env
+
+
+.env file is needed in order to make all things work in this format (put Spotify keys for the Spotify section):
+
+
+````
+REACT_APP_SPOTIFY_TOKEN_ENDPOINT=https://accounts.spotify.com/api/token
+REACT_APP_SPOTIFY_CLIENT_ID=<SPOTIFY_CLIENT_ID>
+REACT_APP_SPOTIFY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET>
+SPOTIFY_API_DOMAIN=https://api.spotify.com
+REACT_APP_SPOTIFY_SEARCH_ENDPOINT=$SPOTIFY_API_DOMAIN/v1/search
+
+
+REACT_APP_HACK_NORRIS_API_DOMAIN=https://blysuzzmda.execute-api.us-east-1.amazonaws.com/dev
+REACT_APP_AWS_USER_ENDPOINT=$REACT_APP_HACK_NORRIS_API_DOMAIN/user
+REACT_APP_AWS_PLAYLIST_ENDPOINT=$REACT_APP_HACK_NORRIS_API_DOMAIN/playlist
+````
+
