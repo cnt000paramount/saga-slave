@@ -87,6 +87,12 @@ To get started with this project, you can follow these steps:
 
 .env file is needed in order to make all things work in this format (put Spotify keys for the Spotify section):
 
+How to get Client_id & Client_secret:
+1. Browse to https://developer.spotify.com/dashboard/applications.
+2. Log in with your Spotify account.
+3. Click on ‘Create an app’.
+4. Pick an ‘App name’ and ‘App description’ of your choice and mark the checkboxes.
+5. After creation, you see your ‘Client Id’ and you can click on ‘Show client secret` to unhide your ’Client secret’.
 
 ````
 REACT_APP_SPOTIFY_TOKEN_ENDPOINT=https://accounts.spotify.com/api/token
