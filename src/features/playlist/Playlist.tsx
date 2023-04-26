@@ -4,7 +4,6 @@ import {
   useGetUsersQuery,
   useAddNewPlaylistMutation,
   useRemovePlaylistMutation,
-  useEditPlaylistMutation,
 } from "../api/apiSlice";
 import { HackNorrisPlaylist } from "../../types/HackNorrisPlaylist";
 import { UiState } from "../../types/UiState";

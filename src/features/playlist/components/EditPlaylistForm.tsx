@@ -11,14 +11,18 @@ export const EditPlaylistForm = ({
   playlist: HackNorrisPlaylist | null;
   setUiState: (state: UiState) => void;
 }) => {
-  const [payload, setPayload] = useState(playlist?.payload);
+  const [payload, setPayload] = useState<string>("");
   const [editPlaylist] = useEditPlaylistMutation();
   const saveModifiedPlaylist = async (playlist: HackNorrisPlaylist) => {
     await editPlaylist(playlist).unwrap();
   };
 
+  const handleSafePayload = (value: string) => {
+    setPayload(value);
+  };
+
   useEffect(() => {
-    setPayload(playlist?.payload);
+    setPayload(JSON.stringify(playlist?.payload));
   }, [playlist]);
 
   const payloadValue =
@@ -45,14 +49,13 @@ export const EditPlaylistForm = ({
           id="payload"
           cols={60}
           rows={20}
-          value={JSON.stringify(payload)}
+          value={payload}
           onChange={(e) => {
             if (e?.currentTarget?.value) {
-              setPayload(e.currentTarget.value);
+              handleSafePayload(e.currentTarget.value);
             }
           }}
         ></textarea>
-        <pre></pre>
         {
           <input
             value="Save"
@@ -61,9 +64,7 @@ export const EditPlaylistForm = ({
               saveModifiedPlaylist({
                 id: playlist?.id ?? "",
                 owner_id: playlist?.owner_id ?? "",
-                payload: JSON.parse(
-                  typeof playlist?.payload === "string" ? playlist?.payload : ""
-                ),
+                payload: JSON.parse(payload),
               });
               setUiState("empty");
             }}
