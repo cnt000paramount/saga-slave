@@ -14,7 +14,7 @@ export function Spotify() {
   return (
     <>
       <div className={styles.container}>
-        <form action="" onSubmit={(e) => e.preventDefault()}>
+        <form className={styles.form} action="" onSubmit={(e) => e.preventDefault()}>
           <h2>Search artist</h2>
           <input
             className={styles.input}
@@ -30,7 +30,7 @@ export function Spotify() {
             }}
           />
         </form>
-        <form action="" onSubmit={(e) => e.preventDefault()}>
+        <form className={styles.form} action="" onSubmit={(e) => e.preventDefault()}>
           <h2>Search song</h2>
           <input
             className={styles.input}

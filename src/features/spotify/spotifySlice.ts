@@ -18,7 +18,7 @@ const initialState: SpotifyState = {
   type: "artist",
 };
 
-export const userSlice = createSlice({
+export const spotifySlice = createSlice({
   name: "spotify",
   initialState,
   reducers: {
@@ -44,8 +44,8 @@ export const userSlice = createSlice({
 });
 
 export const { setToken, setResult, setError, getToken, getResult } =
-  userSlice.actions;
+  spotifySlice.actions;
 
 export const selectSpotify = (state: RootState) => state.spotify;
 
-export default userSlice.reducer;
+export default spotifySlice.reducer;
